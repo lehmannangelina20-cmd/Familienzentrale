@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#e8735a" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Familie" />
+<title>Familien-Zentrale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #fdf6f0; --surface: #ffffff; --surface2: #fef9f5;
+  --border: #f0e6dc; --text: #3d2c24; --muted: #9b7f74;
+  --accent: #e8735a; --accent-soft: #fde8e3;
+  --angelina: #e8a598; --aleyna: #a8c8e8; --cristiano: #a8e0b8;
+  --star: #f5c842; --r: 16px; --rs: 10px;
+  --shadow: 0 2px 12px rgba(61,44,36,.08);
+  --shadow-md: 0 4px 24px rgba(61,44,36,.12);
+  --nav: 68px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overscroll-behavior:none;}
+.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:1.5px solid var(--border);padding:10px 14px 8px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.logo{display:flex;align-items:center;gap:8px;}
+.logo-icon{font-size:26px;}
+.logo h1{font-family:'Pacifico',cursive;font-size:17px;color:var(--accent);line-height:1.1;}
+.logo p{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.3px;}
+.psw{display:flex;gap:5px;}
+.pbtn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 7px;border:2px solid transparent;border-radius:var(--rs);background:var(--surface2);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;}
+.pbtn.on{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 18%,white);}
+.pe{font-size:17px;line-height:1;}
+.pn{font-size:9px;font-weight:700;color:var(--text);}
+/* MAIN */
+.main{flex:1;padding:14px;padding-bottom:calc(var(--nav) + 14px);overflow-y:auto;}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:var(--nav);background:var(--surface);border-top:1.5px solid var(--border);display:flex;box-shadow:0 -4px 20px rgba(61,44,36,.08);z-index:100;}
+.nbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;cursor:pointer;padding:6px 2px;font-family:'Nunito',sans-serif;position:relative;}
+.nbtn::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:3px;border-radius:3px 3px 0 0;background:var(--accent);opacity:0;transition:opacity .2s;}
+.nbtn.on::after{opacity:1;}
+.nbtn.on .ne{transform:scale(1.15);}
+.nbtn.on .nl{color:var(--accent);font-weight:800;}
+.ne{font-size:19px;transition:transform .2s;}
+.nl{font-size:8px;color:var(--muted);font-weight:600;}
+/* SHARED */
+.mtitle{font-family:'Pacifico',cursive;font-size:21px;color:var(--accent);margin-bottom:14px;}
+.card{background:var(--surface);border-radius:var(--r);padding:13px;box-shadow:var(--shadow);border:1.5px solid var(--border);margin-bottom:10px;}
+.ctitle{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.btn{font-family:'Nunito',sans-serif;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.btn:active{transform:scale(.97);}
+.bp{background:var(--accent);color:#fff;padding:9px 14px;font-size:13px;}
+.bp:hover{background:#d45e45;}
+.bg{background:var(--surface2);color:var(--text);padding:7px 11px;font-size:12px;border:1.5px solid var(--border);}
+.bg:hover{background:var(--accent-soft);}
+.bd{background:#fde8e3;color:#c0392b;padding:5px 9px;font-size:11px;}
+input,textarea,select{font-family:'Nunito',sans-serif;font-size:13px;border:1.5px solid var(--border);border-radius:var(--rs);padding:8px 11px;background:var(--surface);color:var(--text);outline:none;transition:border-color .15s;width:100%;}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);}
+.fg{margin-bottom:11px;}
+.fl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.4px;}
+.chips{display:flex;flex-wrap:wrap;gap:5px;}
+.chip{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700;border:2px solid var(--border);background:var(--surface);cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif;}
+.chip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);}
+.tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;}
+.empty{text-align:center;padding:28px 14px;color:var(--muted);}
+.empty .ei{font-size:36px;margin-bottom:6px;}
+.empty p{font-size:13px;font-weight:600;}
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(61,44,36,.4);z-index:200;display:flex;align-items:flex-end;justify-content:center;}
+.modal{background:var(--surface);border-radius:var(--r) var(--r) 0 0;padding:18px 14px 32px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:up .25s ease;}
+@keyframes up{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.mtit{font-size:17px;font-weight:800;}
+.xbtn{background:var(--surface2);border:none;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+/* FAB */
+.fab{position:fixed;bottom:calc(var(--nav) + 14px);right:14px;width:50px;height:50px;border-radius:50%;background:var(--accent);color:#fff;font-size:26px;border:none;cursor:pointer;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:300;transition:transform .15s;z-index:50;}
+.fab:active{transform:scale(.93);}
+/* HIDDEN */
+.hidden{display:none!important;}
+/* ===== SPEISEPLAN ===== */
+.day-card{padding:10px 12px;}
+.dlbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.mname{font-size:14px;font-weight:700;}
+.mmeta{font-size:11px;color:var(--muted);margin-top:2px;}
+.macts{display:flex;gap:5px;margin-top:7px;}
+.addbtn{width:100%;padding:7px;border:2px dashed var(--border);border-radius:var(--rs);background:none;color:var(--muted);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;justify-content:center;transition:all .15s;}
+.addbtn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+.rlist{display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto;}
+.ritem{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;background:var(--surface2);border-radius:var(--rs);border:1px solid var(--border);}
+.rname{font-size:13px;font-weight:700;}
+.rmeta{font-size:10px;color:var(--muted);margin-top:1px;}
+.rpick{padding:11px;border-radius:var(--rs);background:var(--surface2);border:1.5px solid var(--border);cursor:pointer;margin-bottom:7px;transition:all .15s;}
+.rpick:hover{border-color:var(--accent);background:var(--accent-soft);}
+/* ===== KALENDER ===== */
+.wnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.wlbl{font-weight:800;font-size:13px;}
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:14px;}
+.cday{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:5px 3px;cursor:pointer;transition:all .15s;min-height:60px;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.cday:hover,.cday.today{border-color:var(--accent);background:var(--accent-soft);}
+.cdh{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.cdn{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;}
+.cdnum{font-size:14px;font-weight:800;color:var(--text);}
+.cdnum.td{color:var(--accent);}
+.cdots{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;}
+.cdot{width:6px;height:6px;border-radius:50%;}
+.ccnt{font-size:9px;font-weight:700;color:var(--accent);}
+.evitem{padding:7px 9px;background:var(--surface2);border-radius:var(--rs);margin-bottom:5px;border-left:3px solid #ccc;}
+.evtit{font-size:13px;font-weight:700;}
+.evmeta{font-size:11px;color:var(--muted);margin-top:2px;}
+/* ===== TODO ===== */
+.sbar{display:flex;gap:10px;flex-wrap:wrap;}
+.sp{display:flex;align-items:center;gap:7px;flex:1;min-width:110px;}
+.spe{font-size:22px;}
+.spn{font-size:11px;font-weight:700;}
+.spc{font-size:13px;font-weight:800;}
+.tabs{display:flex;background:var(--surface);border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden;margin-bottom:10px;}
+.tab{flex:1;padding:9px;border:none;background:none;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px;}
+.tab.on{background:var(--accent);color:#fff;}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:9px;font-size:10px;font-weight:800;background:rgba(255,255,255,.3);color:#fff;}
+.tab:not(.on) .badge{background:var(--accent);color:#fff;}
+.tlist{display:flex;flex-direction:column;gap:7px;}
+.titem{background:var(--surface);border-radius:var(--r);padding:9px 11px;box-shadow:var(--shadow);border:1.5px solid var(--border);}
+.titem.done{opacity:.6;}
+.tmain{display:flex;align-items:flex-start;gap:9px;}
+.chk{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);background:var(--surface);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;font-family:'Nunito',sans-serif;}
+.chk.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.tcont{flex:1;}
+.ttxt{font-size:13px;font-weight:600;line-height:1.3;}
+.titem.done .ttxt{text-decoration:line-through;color:var(--muted);}
+.tmeta{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;}
+.dbtn{width:100%;display:flex;align-items:center;gap:11px;padding:13px 11px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;font-family:'Nunito',sans-serif;font-size:15px;margin-bottom:7px;transition:all .15s;}
+.dbtn:hover{border-color:var(--accent);background:var(--accent-soft);}
+.rh{display:flex;align-items:center;justify-content:space-between;padding:7px 11px;background:var(--accent-soft);border-radius:var(--rs);margin-bottom:9px;font-size:11px;font-weight:600;}
+/* ===== ÄMTER ===== */
+.rotinfo{display:flex;align-items:center;gap:11px;}
+.kwb{margin-left:auto;background:var(--accent-soft);color:var(--accent);padding:3px 9px;border-radius:20px;font-weight:800;font-size:12px;}
+.kidsec{margin-bottom:11px;}
+.khdr{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.pmini{display:flex;gap:4px;margin-left:auto;}
+.pdot{width:11px;height:11px;border-radius:50%;border:2px solid var(--border);background:var(--surface);transition:all .2s;}
+.pdot.on{border-color:transparent;}
+.alist{display:flex;flex-direction:column;gap:7px;}
+.aitem{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .15s;background:var(--surface2);}
+.aitem:active{transform:scale(.98);}
+.aitem.done{background:#f0fbf0;border-color:#c8e6c9;opacity:.8;}
+.aemoji{font-size:18px;}
+.aname{flex:1;font-size:13px;font-weight:600;}
+.aitem.done .aname{text-decoration:line-through;color:var(--muted);}
+.achk{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;transition:all .15s;}
+.achk.on{background:#4caf50;border-color:#4caf50;color:#fff;}
+.allrow{display:flex;align-items:center;gap:7px;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);}
+.allrow:last-child{border-bottom:none;}
+/* ===== EINKAUF ===== */
+.estats{display:flex;justify-content:space-around;}
+.stat{text-align:center;}
+.snum{font-size:22px;font-weight:900;color:var(--accent);}
+.slbl{font-size:10px;color:var(--muted);font-weight:600;}
+.eitem{display:flex;align-items:center;gap:7px;padding:7px 0;border-bottom:1px solid var(--border);}
+.eitem:last-child{border-bottom:none;}
+.eitem.done .iname{text-decoration:line-through;color:var(--muted);}
+.iname{font-size:13px;font-weight:600;flex:1;}
+.imenge{font-size:11px;color:var(--muted);background:var(--surface2);padding:2px 6px;border-radius:9px;}
+/* ===== PINNWAND ===== */
+.ngrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ncard{border-radius:var(--r);border:1.5px solid;padding:11px;position:relative;box-shadow:var(--shadow);}
+.npin{position:absolute;top:-7px;left:50%;transform:translateX(-50%);font-size:16px;}
+.nfor{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;margin-top:5px;}
+.ntxt{font-size:12px;font-weight:600;line-height:1.4;margin-top:9px;margin-bottom:9px;word-break:break-word;min-height:36px;}
+.nfoot{display:flex;align-items:center;gap:5px;border-top:1px solid rgba(0,0,0,.08);padding-top:5px;flex-wrap:wrap;}
+.nauthor{font-size:9px;font-weight:800;}
+.ndate{font-size:9px;color:var(--muted);flex:1;}
+.ndel{background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:1px 3px;border-radius:3px;font-family:'Nunito',sans-serif;}
+.ndel:hover{background:rgba(0,0,0,.08);}
+.cpick{display:flex;gap:7px;flex-wrap:wrap;}
+.cdotpick{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .15s;}
+.cdotpick.on{border-color:var(--accent);transform:scale(1.15);}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-row">
+      <div class="logo">
+        <span class="logo-icon">🏡</span>
+        <div>
+          <h1>Familien-Zentrale</h1>
+          <p>Angelina · Aleyna · Cristiano</p>
+        </div>
+      </div>
+      <div class="psw">
+        <button class="pbtn on" style="--pc:#e8a598" data-person="angelina" onclick="setPerson('angelina')"><span class="pe">👩</span><span class="pn">Angelina</span></button>
+        <button class="pbtn" style="--pc:#a8c8e8" data-person="aleyna" onclick="setPerson('aleyna')"><span class="pe">👧</span><span class="pn">Aleyna</span></button>
+        <button class="pbtn" style="--pc:#a8e0b8" data-person="cristiano" onclick="setPerson('cristiano')"><span class="pe">👦</span><span class="pn">Cristiano</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREAS -->
+  <main class="main">
+    <div id="page-speiseplan"></div>
+    <div id="page-kalender" class="hidden"></div>
+    <div id="page-todo" class="hidden"></div>
+    <div id="page-aemter" class="hidden"></div>
+    <div id="page-einkauf" class="hidden"></div>
+    <div id="page-pinnwand" class="hidden"></div>
+    <div id="page-sterne" class="hidden"></div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bnav">
+    <button class="nbtn on" data-page="speiseplan" onclick="showPage('speiseplan')"><span class="ne">🍽️</span><span class="nl">Speiseplan</span></button>
+    <button class="nbtn" data-page="kalender" onclick="showPage('kalender')"><span class="ne">📅</span><span class="nl">Kalender</span></button>
+    <button class="nbtn" data-page="todo" onclick="showPage('todo')"><span class="ne">✅</span><span class="nl">To-Do</span></button>
+    <button class="nbtn" data-page="aemter" onclick="showPage('aemter')"><span class="ne">🏠</span><span class="nl">Ämter</span></button>
+    <button class="nbtn" data-page="einkauf" onclick="showPage('einkauf')"><span class="ne">🛒</span><span class="nl">Einkauf</span></button>
+    <button class="nbtn" data-page="pinnwand" onclick="showPage('pinnwand')"><span class="ne">📌</span><span class="nl">Pinnwand</span></button>
+    <button class="nbtn" data-page="sterne" onclick="showPage('sterne')"><span class="ne">⭐</span><span class="nl">Sterne</span></button>
+  </nav>
+</div>
+
+<!-- MODAL CONTAINER -->
+<div id="modal-container"></div>
+
+<script>
+// ============================================================
+// STORAGE & STATE
+// ============================================================
+const PERSONS = {
+  angelina:{name:'Angelina',emoji:'👩',color:'#e8a598'},
+  aleyna:{name:'Aleyna',emoji:'👧',color:'#a8c8e8'},
+  cristiano:{name:'Cristiano',emoji:'👦',color:'#a8e0b8'}
+};
+const KIDS = ['aleyna','cristiano'];
+
+function ls(key, def) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch { return def; }
+}
+function lsSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
+
+let state = {
+  activePerson: ls('activePerson','angelina'),
+  page: 'speiseplan',
+  speiseplan: { plan: ls('sp_plan',{}), recipes: ls('sp_recipes',[
+    {id:'1',name:'Spaghetti Bolognese',zutaten:'Hackfleisch, Tomaten, Spaghetti',dauer:'30 min'},
+    {id:'2',name:'Hähnchen mit Reis',zutaten:'Hähnchenbrust, Reis, Gemüse',dauer:'40 min'},
+    {id:'3',name:'Pizza',zutaten:'Teig, Tomatensoße, Käse',dauer:'45 min'},
+    {id:'4',name:'Gemüsesuppe',zutaten:'Karotten, Kartoffeln, Sellerie',dauer:'35 min'},
+  ])},
+  kalender: { events: ls('kal_events',[]), weekOffset: 0, filter:'all' },
+  todo: {
+    gemeinsam: ls('todo_gem',[
+      {id:'g1',text:'Spülmaschine ausräumen',done:false,doneBy:null,recurring:false,stars:1},
+      {id:'g2',text:'Tisch decken',done:false,doneBy:null,recurring:true,stars:1},
+    ]),
+    personal: ls('todo_pers',{}),
+    stars: ls('todo_stars',{aleyna:0,cristiano:0}),
+    tab: 'gemeinsam'
+  },
+  aemter: { doneMap: ls('aemter_done',{}), weekOffset: 0 },
+  einkauf: { items: ls('einkauf_items',[]), showDone: false },
+  sterne: {
+    history: ls('sterne_history',[]),
+    settings: ls('sterne_settings',{
+      aleyna:  {fixBetrag:15, proStern:0.50},
+      cristiano: {fixBetrag:10, proStern:0.50}
+    })
+  },
+  pinnwand: { notes: ls('pinn_notes',[
+    {id:'w1',text:'Willkommen bei der Familien-Zentrale! 🎉',author:'alle',pinColor:'#fff8e1',createdAt:new Date().toLocaleDateString('de-DE'),forPerson:'alle'}
+  ]), filter:'alle' }
+};
+
+function save() {
+  lsSet('activePerson', state.activePerson);
+  lsSet('sp_plan', state.speiseplan.plan);
+  lsSet('sp_recipes', state.speiseplan.recipes);
+  lsSet('kal_events', state.kalender.events);
+  lsSet('todo_gem', state.todo.gemeinsam);
+  lsSet('todo_pers', state.todo.personal);
+  lsSet('todo_stars', state.todo.stars);
+  lsSet('aemter_done', state.aemter.doneMap);
+  lsSet('einkauf_items', state.einkauf.items);
+  lsSet('sterne_history', state.sterne.history);
+  lsSet('sterne_settings', state.sterne.settings);
+  lsSet('pinn_notes', state.pinnwand.notes);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showPage(page) {
+  document.querySelectorAll('.main > div').forEach(d => d.classList.add('hidden'));
+  document.getElementById('page-'+page).classList.remove('hidden');
+  document.querySelectorAll('.nbtn').forEach(b => b.classList.toggle('on', b.dataset.page===page));
+  state.page = page;
+  render(page);
+}
+
+function setPerson(p) {
+  state.activePerson = p;
+  save();
+  document.querySelectorAll('.pbtn').forEach(b => b.classList.toggle('on', b.dataset.person===p));
+  render(state.page);
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function showModal(html, onClose) {
+  const mc = document.getElementById('modal-container');
+  mc.innerHTML = `<div class="ov" id="modal-ov"><div class="modal" onclick="event.stopPropagation()">${html}</div></div>`;
+  mc.querySelector('#modal-ov').onclick = () => { closeModal(); if(onClose) onClose(); };
+}
+function closeModal() {
+  document.getElementById('modal-container').innerHTML = '';
+}
+
+// ============================================================
+// RENDER DISPATCHER
+// ============================================================
+function render(page) {
+  const el = document.getElementById('page-'+page);
+  if (!el) return;
+  if (page==='speiseplan') el.innerHTML = renderSpeiseplan();
+  else if (page==='kalender') el.innerHTML = renderKalender();
+  else if (page==='todo') el.innerHTML = renderTodo();
+  else if (page==='aemter') el.innerHTML = renderAemter();
+  else if (page==='einkauf') el.innerHTML = renderEinkauf();
+  else if (page==='pinnwand') el.innerHTML = renderPinnwand();
+  else if (page==='sterne') el.innerHTML = renderSterne();
+}
+
+// ============================================================
+// SPEISEPLAN
+// ============================================================
+const DAYS = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'];
+
+function renderSpeiseplan() {
+  const {plan, recipes} = state.speiseplan;
+  let html = `<h2 class="mtitle">🍽️ Speiseplan</h2>`;
+  DAYS.forEach((day,i) => {
+    const meal = plan[i];
+    html += `<div class="card day-card">
+      <div class="dlbl">${day}</div>`;
+    if (meal) {
+      html += `<div class="mname">${meal.name}</div>
+        ${meal.dauer ? `<div class="mmeta">⏱ ${meal.dauer}</div>` : ''}
+        <div class="macts">
+          <button class="btn bg" style="font-size:11px;padding:4px 8px" onclick="openRecipePicker(${i})">✏️ Ändern</button>
+          <button class="btn bd" onclick="removeMeal(${i})">✕ Entfernen</button>
+        </div>`;
+    } else {
+      html += `<button class="addbtn" onclick="openRecipePicker(${i})"><span>+</span> Mahlzeit wählen</button>`;
+    }
+    html += `</div>`;
+  });
+
+  html += `<div class="card" style="margin-top:18px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+      <div class="ctitle">📖 Rezepte (${recipes.length})</div>
+      <button class="btn bp" style="font-size:11px;padding:5px 10px" onclick="openAddRecipe()">+ Neu</button>
+    </div>
+    <div class="rlist">`;
+  recipes.forEach(r => {
+    html += `<div class="ritem">
+      <div><div class="rname">${r.name}</div>${r.zutaten?`<div class="rmeta">${r.zutaten}</div>`:''}${r.dauer?`<div class="rmeta">⏱ ${r.dauer}</div>`:''}</div>
+      <button class="btn bd" onclick="deleteRecipe('${r.id}')">🗑</button>
+    </div>`;
+  });
+  if (!recipes.length) html += `<div class="empty"><div class="ei">🍴</div><p>Keine Rezepte</p></div>`;
+  html += `</div></div>`;
+  return html;
+}
+
+function openRecipePicker(dayIdx) {
+  const recipes = state.speiseplan.recipes;
+  let inner = `<div class="mhdr"><div class="mtit">Mahlzeit für ${DAYS[dayIdx]}</div><button class="xbtn" onclick="closeModal()">✕</button></div>
+    <div class="fg"><input placeholder="🔍 Suchen..." oninput="filterRecipePicker(this.value,${dayIdx})" /></div>
+    <div id="rplist">`;
+  recipes.forEach(r => {
+    inner += `<div class="rpick" onclick="assignMeal(${dayIdx},'${r.id}')"><div class="rname">${r.name}</div>${r.dauer?`<div class="rmeta">⏱ ${r.dauer}</div>`:''}</div>`;
+  });
+  inner += `</div>`;
+  showModal(inner);
+}
+
+function filterRecipePicker(q, dayIdx) {
+  const recipes = state.speiseplan.recipes.filter(r => r.name.toLowerCase().includes(q.toLowerCase()));
+  let html = '';
+  recipes.forEach(r => {
+    html += `<div class="rpick" onclick="assignMeal(${dayIdx},'${r.id}')"><div class="rname">${r.name}</div>${r.dauer?`<div class="rmeta">⏱ ${r.dauer}</div>`:''}</div>`;
+  });
+  document.getElementById('rplist').innerHTML = html || '<div class="empty"><p>Keine Rezepte gefunden</p></div>';
+}
+
+function assignMeal(dayIdx, recipeId) {
+  const r = state.speiseplan.recipes.find(x => x.id===recipeId);
+  if (r) state.speiseplan.plan[dayIdx] = r;
+  save(); closeModal(); render('speiseplan');
+}
+
+function removeMeal(dayIdx) {
+  delete state.speiseplan.plan[dayIdx];
+  save(); render('speiseplan');
+}
+
+function openAddRecipe() {
+  showModal(`<div class="mhdr"><div class="mtit">Neues Rezept</div><button class="xbtn" onclick="closeModal()">✕</button></div>
+    <div class="fg"><label class="fl">Name *</label><input id="rn" placeholder="z.B. Lasagne" /></div>
+    <div class="fg"><label class="fl">Zutaten</label><input id="rz" placeholder="z.B. Hackfleisch, Nudeln..." /></div>
+    <div class="fg"><label class="fl">Zubereitungszeit</label><input id="rd" placeholder="z.B. 30 min" /></div>
+    <button class="btn bp" style="width:100%;justify-content:center;margin-top:4px" onclick="saveRecipe()">💾 Speichern</button>`);
+}
+
+function saveRecipe() {
+  const name = document.getElementById('rn').value.trim();
+  if (!name) return;
+  state.speiseplan.recipes.push({id:Date.now().toString(),name,zutaten:document.getElementById('rz').value,dauer:document.getElementById('rd').value});
+  save(); closeModal(); render('speiseplan');
+}
+
+function deleteRecipe(id) {
+  state.speiseplan.recipes = state.speiseplan.recipes.filter(r => r.id!==id);
+  save(); render('speiseplan');
+}
+
+// ============================================================
+// KALENDER
+// ============================================================
+function getWeekDates(offset=0) {
+  const now = new Date(), day = now.getDay(), diff = (day===0?-6:1-day);
+  const mon = new Date(now); mon.setDate(now.getDate()+diff+offset*7);
+  return Array.from({length:7},(_,i)=>{ const d=new Date(mon); d.setDate(mon.getDate()+i); return d; });
+}
+function dKey(d) { return d instanceof Date ? d.toISOString().split('T')[0] : d; }
+function isToday(d) { return dKey(d)===dKey(new Date()); }
+
+const PCOLORS = {
+  angelina:{dot:'#e8a598',bg:'#fde8e3'},
+  aleyna:{dot:'#a8c8e8',bg:'#e3f0fb'},
+  cristiano:{dot:'#a8e0b8',bg:'#e3fbe8'}
+};
+const WDAYS = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+const FDAYS = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+
+function renderKalender() {
+  const {events,weekOffset,filter} = state.kalender;
+  const weekDates = getWeekDates(weekOffset);
+  const wlbl = weekOffset===0?'Diese Woche':weekOffset===1?'Nächste Woche':weekOffset===-1?'Letzte Woche':`Woche ${weekOffset>0?'+':''}${weekOffset}`;
+
+  let html = `<h2 class="mtitle">📅 Kalender</h2>
+    <div class="chips" style="margin-bottom:12px">
+      <button class="chip ${filter==='all'?'on':''}" onclick="setKalFilter('all')">Alle</button>`;
+  Object.entries(PERSONS).forEach(([id,p]) => {
+    html += `<button class="chip ${filter===id?'on':''}" onclick="setKalFilter('${id}')">${p.emoji} ${p.name}</button>`;
+  });
+  html += `</div>
+    <div class="wnav">
+      <button class="btn bg" onclick="kalWeek(-1)">‹</button>
+      <div class="wlbl">${wlbl}</div>
+      <button class="btn bg" onclick="kalWeek(1)">›</button>
+    </div>
+    <div class="wgrid">`;
+
+  weekDates.forEach((date,i) => {
+    const dayEvs = events.filter(e => e.date===dKey(date) && (filter==='all'||e.person===filter));
+    const today = isToday(date);
+    html += `<div class="cday ${today?'today':''}" onclick="openDayDetail('${dKey(date)}')">
+      <div class="cdh"><span class="cdn">${WDAYS[i]}</span><span class="cdnum ${today?'td':''}">${date.getDate()}</span></div>
+      <div class="cdots">`;
+    dayEvs.slice(0,3).forEach(ev => { html += `<div class="cdot" style="background:${PCOLORS[ev.person]?.dot||'#ccc'}"></div>`; });
+    if (dayEvs.length>3) html += `<span style="font-size:8px;color:var(--muted)">+${dayEvs.length-3}</span>`;
+    html += `</div>${dayEvs.length?`<span class="ccnt">${dayEvs.length}</span>`:''}
+    </div>`;
+  });
+  html += `</div>`;
+
+  weekDates.forEach((date,i) => {
+    const dayEvs = events.filter(e => e.date===dKey(date) && (filter==='all'||e.person===filter));
+    if (!dayEvs.length) return;
+    html += `<div class="card" style="margin-bottom:7px"><div class="ctitle">${FDAYS[i]}, ${date.getDate()}.${date.getMonth()+1}.</div>`;
+    dayEvs.forEach(ev => {
+      html += `<div class="evitem" style="border-left-color:${PCOLORS[ev.person]?.dot||'#ccc'}">
+        <div class="evtit">${ev.title}</div>
+        <div class="evmeta">${ev.time?`🕐 ${ev.time} · `:''}${PERSONS[ev.person]?.emoji||''} ${PERSONS[ev.person]?.name||ev.person}</div>
+        ${ev.note?`<div class="evmeta" style="font-style:italic">${ev.note}</div>`:''}
+        <button class="btn bd" style="margin-top:4px" onclick="deleteEvent('${ev.id}')">Löschen</button>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  html += `<button class="fab" onclick="openAddEvent('${dKey(new Date())}')">+</button>`;
+  return html;
+}
+
+function setKalFilter(f) { state.kalender.filter=f; render('kalender'); }
+function kalWeek(d) { state.kalender.weekOffset+=d; render('kalender'); }
+
+function openDayDetail(dateStr) {
+  const events = state.kalender.events.filter(e => e.date===dateStr);
+  const dateObj = new Date(dateStr);
+  const label = `${dateObj.getDate()}.${dateObj.getMonth()+1}.${dateObj.getFullYear()}`;
+  let inner = `<div class="mhdr"><div class="mtit">${label}</div><button class="xbtn" onclick="closeModal()">✕</button></div>`;
+  if (!events.length) {
+    inner += `<div class="empty"><div class="ei">📅</div><p>Keine Termine</p></div>`;
+  } else {
+    events.forEach(ev => {
+      inner += `<div class="evitem" style="border-left-color:${PCOLORS[ev.person]?.dot};margin-bottom:7px">
+        <div class="evtit">${ev.title}</div>
+        <div class="evmeta">${ev.time?`🕐 ${ev.time} · `:''}${PERSONS[ev.person]?.emoji||''} ${PERSONS[ev.person]?.name||''}</div>
+        ${ev.note?`<div class="evmeta" style="font-style:italic">${ev.note}</div>`:''}
+        <button class="btn bd" style="margin-top:5px" onclick="deleteEvent('${ev.id}');closeModal();render('kalender')">Löschen</button>
+      </div>`;
+    });
+  }
+  inner += `<button class="btn bp" style="width:100%;justify-content:center;margin-top:10px" onclick="closeModal();openAddEvent('${dateStr}')">+ Termin hinzufügen</button>`;
+  showModal(inner);
+}
+
+function openAddEvent(dateStr) {
+  showModal(`<div class="mhdr"><div class="mtit">Neuer Termin</div><button class="xbtn" onclick="closeModal()">✕</button></div>
+    <div class="fg"><label class="fl">Datum</label><input type="date" id="evd" value="${dateStr}" /></div>
+    <div class="fg"><label class="fl">Titel *</label><input id="evt" placeholder="z.B. Zahnarzt" /></div>
+    <div class="fg"><label class="fl">Uhrzeit</label><input type="time" id="evtime" /></div>
+    <div class="fg"><label class="fl">Person</label><div class="chips" id="evpchips">
+      ${Object.entries(PERSONS).map(([id,p])=>`<button class="chip ${id===state.activePerson?'on':''}" onclick="selEvPerson('${id}')">${p.emoji} ${p.name}</button>`).join('')}
+    </div></div>
+    <div class="fg"><label class="fl">Notiz</label><input id="evnote" placeholder="Optional..." /></div>
+    <button class="btn bp" style="width:100%;justify-content:center" onclick="saveEvent()">💾 Speichern</button>`);
+  window._evPerson = state.activePerson;
+}
+
+function selEvPerson(id) {
+  window._evPerson = id;
+  document.querySelectorAll('#evpchips .chip').forEach(c => c.classList.toggle('on', c.textContent.includes(PERSONS[id].name)));
+}
+
+function saveEvent() {
+  const title = document.getElementById('evt').value.trim();
+  if (!title) return;
+  state.kalender.events.push({
+    id: Date.now().toString(),
+    date: document.getElementById('evd').value,
+    title,
+    time: document.getElementById('evtime').value,
+    person: window._evPerson || state.activePerson,
+    note: document.getElementById('evnote').value
+  });
+  save(); closeModal(); render('kalender');
+}
+
+function deleteEvent(id) {
+  state.kalender.events = state.kalender.events.filter(e => e.id!==id);
+  save(); render('kalender');
+}
+
+// ============================================================
+// TODO
+// ============================================================
+function renderTodo() {
+  const {gemeinsam,personal,stars,tab} = state.todo;
+  const myTodos = personal[state.activePerson] || [];
+
+  let html = `<h2 class="mtitle">✅ To-Do Listen</h2>
+    <div class="card sbar" style="margin-bottom:11px">`;
+  KIDS.forEach(kid => {
+    html += `<div class="sp">
+      <span class="spe">${PERSONS[kid].emoji}</span>
+      <div><div class="spn">${PERSONS[kid].name}</div><div class="spc">⭐ ${stars[kid]||0} Sterne</div></div>
+      <button class="btn bg" style="font-size:10px;padding:3px 7px;margin-left:auto" onclick="resetStars('${kid}')">Reset</button>
+    </div>`;
+  });
+  html += `</div>
+    <div class="tabs">
+      <button class="tab ${tab==='gemeinsam'?'on':''}" onclick="setTodoTab('gemeinsam')">
+        👨‍👩‍👧‍👦 Gemeinsam <span class="badge">${gemeinsam.filter(t=>!t.done).length}</span>
+      </button>
+      <button class="tab ${tab==='personal'?'on':''}" onclick="setTodoTab('personal')">
+        ${PERSONS[state.activePerson].emoji} Meine
+      </button>
+    </div>`;
+
+  const list = tab==='gemeinsam' ? gemeinsam : myTodos;
+  const hasRecurringDone = tab==='gemeinsam' && gemeinsam.some(t=>t.recurring&&t.done);
+
+  if (hasRecurringDone) {
+    html += `<div class="rh"><span>🔄 Wiederkehrende zurücksetzen?</span><button class="btn bg" style="font-size:10px;padding:3px 7px" onclick="resetRecurring()">Zurücksetzen</button></div>`;
+  }
+
+  html += `<div class="tlist">`;
+  list.forEach(todo => {
+    html += `<div class="titem card ${todo.done?'done':''}">
+      <div class="tmain">
+        <button class="chk ${todo.done?'on':''}" onclick="toggleTodo('${todo.id}','${tab}')">${todo.done?'✓':''}</button>
+        <div class="tcont">
+          <div class="ttxt">${todo.text}</div>
+          <div class="tmeta">
+            ${todo.recurring?`<span class="tag" style="background:#e8f4ff;color:#3a7bc8">🔄 ${recurringLabel(todo.recurringType,todo.recurringDay)}</span>`:''}
+            ${tab==='gemeinsam'?`<span class="tag" style="background:#fff8e1;color:#b8860b">⭐ ${todo.stars||1}</span>`:''}
+            ${todo.done&&todo.doneBy?`<span class="tag" style="background:#e8fbe8;color:#2e7d32">${PERSONS[todo.doneBy]?.emoji||''} ${PERSONS[todo.doneBy]?.name||todo.doneBy}</span>`:''}
+          </div>
+        </div>
+        <button class="btn bd" style="font-size:11px;padding:3px 7px;flex-shrink:0" onclick="deleteTodo('${todo.id}','${tab}')">🗑</button>
+      </div>
+    </div>`;
+  });
+  if (!list.length) html += `<div class="empty"><div class="ei">🎉</div><p>Alles erledigt!</p></div>`;
+  html += `</div>
+    <button class="btn bp" style="width:100%;justify-content:center;margin-top:11px" onclick="openAddTodo()">+ Aufgabe hinzufügen</button>`;
+  return html;
+}
+
+function setTodoTab(t) { state.todo.tab=t; render('todo'); }
+function resetStars(kid) { state.todo.stars[kid]=0; save(); render('todo'); }
+function resetRecurring() {
+  state.todo.gemeinsam = state.todo.gemeinsam.map(t => t.recurring&&t.done?{...t,done:false,doneBy:null}:t);
+  save(); render('todo');
+}
+
+function toggleTodo(id, list) {
+  const todos = list==='gemeinsam' ? state.todo.gemeinsam : (state.todo.personal[state.activePerson]||[]);
+  const todo = todos.find(t=>t.id===id);
+  if (!todo) return;
+  if (todo.done) {
+    if (list==='gemeinsam') state.todo.gemeinsam = state.todo.gemeinsam.map(t=>t.id===id?{...t,done:false,doneBy:null}:t);
+    else { state.todo.personal[state.activePerson] = todos.map(t=>t.id===id?{...t,done:false,doneBy:null}:t); }
+    save(); render('todo');
+  } else {
+    openDoneBy(id, list, todo);
+  }
+}
+
+function openDoneBy(id, list, todo) {
+  let inner = `<div class="mhdr"><div class="mtit">Wer hat's erledigt?</div><button class="xbtn" onclick="closeModal()">✕</button></div>`;
+  Object.entries(PERSONS).forEach(([pid,p]) => {
+    inner += `<button class="dbtn" onclick="confirmDone('${id}','${list}','${pid}')" style="--pc:${p.color}">
+      <span style="font-size:22px">${p.emoji}</span>
+      <span style="font-weight:700">${p.name}</span>
+      ${KIDS.includes(pid)&&list==='gemeinsam'?`<span class="tag" style="background:#fff8e1;color:#b8860b;margin-left:auto">+⭐ ${todo?.stars||1} Stern${(todo?.stars||1)>1?'e':''}</span>`:''}
+    </button>`;
+  });
+  showModal(inner);
+}
+
+function confirmDone(id, list, person) {
+  if (list==='gemeinsam') {
+    const todo = state.todo.gemeinsam.find(t=>t.id===id);
+    if (todo && KIDS.includes(person)) {
+      state.todo.stars[person] = (state.todo.stars[person]||0) + (todo.stars||1);
+    }
+    state.todo.gemeinsam = state.todo.gemeinsam.map(t=>t.id===id?{...t,done:true,doneBy:person}:t);
+  } else {
+    const todos = state.todo.personal[state.activePerson]||[];
+    state.todo.personal[state.activePerson] = todos.map(t=>t.id===id?{...t,done:true,doneBy:person}:t);
+  }
+  save(); closeModal(); render('todo');
+}
+
+function deleteTodo(id, list) {
+  if (list==='gemeinsam') state.todo.gemeinsam = state.todo.gemeinsam.filter(t=>t.id!==id);
+  else { const todos = state.todo.personal[state.activePerson]||[]; state.todo.personal[state.activePerson]=todos.filter(t=>t.id!==id); }
+  save(); render('todo');
+}
+
+const WEEKDAYS = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+
+function recurringLabel(type, day) {
+  if (!type || type==='none') return 'Einmalig';
+  if (type==='daily') return 'Täglich';
+  if (type==='weekly') return 'Wöchentlich';
+  if (type==='weekday') return 'Jeden ' + (WEEKDAYS[day]||'');
+  return 'Wiederkehrend';
+}
+
+function shouldResetToday(todo) {
+  if (!todo.recurring || !todo.recurringType || todo.recurringType==='none') return false;
+  const now = new Date();
+  const todayStr = now.toISOString().split('T')[0];
+  if (todo.lastResetDate === todayStr) return false;
+  if (todo.recurringType==='daily') return true;
+  if (todo.recurringType==='weekly') return now.getDay()===1;
+  if (todo.recurringType==='weekday') return now.getDay()===Number(todo.recurringDay);
+  return false;
+}
+
+function autoResetRecurring() {
+  const todayStr = new Date().toISOString().split('T')[0];
+  let changed = false;
+  state.todo.gemeinsam = state.todo.gemeinsam.map(t => {
+    if (t.done && shouldResetToday(t)) { changed=true; return {...t,done:false,doneBy:null,lastResetDate:todayStr}; }
+    return t;
+  });
+  Object.keys(state.todo.personal).forEach(person => {
+    state.todo.personal[person] = (state.todo.personal[person]||[]).map(t => {
+      if (t.done && shouldResetToday(t)) { changed=true; return {...t,done:false,doneBy:null,lastResetDate:todayStr}; }
+      return t;
+    });
+  });
+  if (changed) save();
+}
+
+function openAddTodo() {
+  const tab = state.todo.tab;
+  const starRows = [1,2,3,5].map(s => {
+    const stars = Array(s).fill('⭐').join('');
+    return '<button class="chip' + (s===1?' on':'') + '" onclick="selStars(' + s + ')">' + stars + ' ' + s + '</button>';
+  }).join('');
+  const wdRows = WEEKDAYS.map((d,i) => {
+    return '<button class="chip' + (i===1?' on':'') + '" onclick="selWeekday(' + i + ',this)">' + d + '</button>';
+  }).join('');
+  const starSection = tab==='gemeinsam'
+    ? '<div class="fg"><label class="fl">Sterne-Wert</label><div class="chips" id="starchips">' + starRows + '</div></div>'
+    : '';
+  const html = '<div class="mhdr"><div class="mtit">Neue Aufgabe</div><button class="xbtn" onclick="closeModal()">&#x2715;</button></div>'
+    + '<div class="fg"><label class="fl">Aufgabe *</label><input id="ttext" placeholder="Was soll getan werden?" /></div>'
+    + starSection
+    + '<div class="fg"><label class="fl">Wiederholung</label><div class="chips" id="recchips">'
+    + '<button class="chip on" data-type="none" onclick="selRecType(this)">Einmalig</button>'
+    + '<button class="chip" data-type="daily" onclick="selRecType(this)">&#x1F4C5; T&#xe4;glich</button>'
+    + '<button class="chip" data-type="weekly" onclick="selRecType(this)">&#x1F4C6; W&#xf6;chentlich</button>'
+    + '<button class="chip" data-type="weekday" onclick="selRecType(this)">&#x1F4CC; Bestimmter Tag</button>'
+    + '</div></div>'
+    + '<div id="weekday-picker" style="display:none" class="fg"><label class="fl">Welcher Wochentag?</label><div class="chips" id="wdchips">' + wdRows + '</div></div>'
+    + '<button class="btn bp" style="width:100%;justify-content:center;margin-top:8px" onclick="saveTodo()">&#x1F4BE; Speichern</button>';
+  showModal(html);
+  window._tStars=1; window._tRecType='none'; window._tRecDay=1;
+}
+
+function selStars(s) {
+  window._tStars=s;
+  document.querySelectorAll('#starchips .chip').forEach(c => c.classList.toggle('on', c.textContent.trim().endsWith(String(s))));
+}
+
+function selRecType(btn) {
+  const type = btn.dataset.type;
+  window._tRecType=type;
+  document.querySelectorAll('#recchips .chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('weekday-picker').style.display = type==='weekday'?'block':'none';
+}
+
+function selWeekday(i, btn) {
+  window._tRecDay=i;
+  document.querySelectorAll('#wdchips .chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function saveTodo() {
+  const text = document.getElementById('ttext').value.trim();
+  if (!text) return;
+  const type = window._tRecType||'none';
+  const todo = {
+    id: Date.now().toString(), text, done:false, doneBy:null,
+    recurring: type!=='none',
+    recurringType: type,
+    recurringDay: type==='weekday'?(window._tRecDay||1):null,
+    stars: window._tStars||1,
+    lastResetDate: null
+  };
+  if (state.todo.tab==='gemeinsam') state.todo.gemeinsam.push(todo);
+  else { if(!state.todo.personal[state.activePerson]) state.todo.personal[state.activePerson]=[]; state.todo.personal[state.activePerson].push(todo); }
+  save(); closeModal(); render('todo');
+}
+
+// ============================================================
+// ÄMTER
+// ============================================================
+const AEMTER = [
+  {id:'bad',name:'Bad Amt',emoji:'🚿'},
+  {id:'kueche',name:'Küchen Amt',emoji:'🍳'},
+  {id:'tisch',name:'Tisch & Lebensmittel',emoji:'🥗'},
+  {id:'boden',name:'Boden Amt',emoji:'🧹'},
+  {id:'waesche',name:'Wäsche Amt',emoji:'👕'},
+  {id:'muell',name:'Müll Amt',emoji:'🗑️'},
+];
+const KIDS_LIST = [
+  {id:'aleyna',name:'Aleyna',emoji:'👧',color:'#a8c8e8'},
+  {id:'cristiano',name:'Cristiano',emoji:'👦',color:'#a8e0b8'},
+];
+
+function getWeekNum(date) {
+  const d = new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));
+  const dn = d.getUTCDay()||7; d.setUTCDate(d.getUTCDate()+4-dn);
+  const ys = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d-ys)/86400000)+1)/7);
+}
+
+function getAemterAssignments(weekNum) {
+  // Each kid gets exactly 1 Amt per week, rotating through all 6
+  // Aleyna starts at index (weekNum % 6), Cristiano is 3 ahead (opposite side)
+  const aleynaIdx = weekNum % 6;
+  const cristianoIdx = (weekNum + 3) % 6;
+  return {
+    aleyna: AEMTER[aleynaIdx],
+    cristiano: AEMTER[cristianoIdx]
+  };
+}
+
+function renderAemter() {
+  const now = new Date();
+  const target = new Date(now); target.setDate(now.getDate()+state.aemter.weekOffset*7);
+  const weekNum = getWeekNum(target);
+  const assignments = getAemterAssignments(weekNum);
+  const dayOfWeek = now.getDay();
+  const daysUntilSun = dayOfWeek===0?7:7-dayOfWeek;
+  const wlbl = state.aemter.weekOffset===0?'Diese Woche':state.aemter.weekOffset===1?'Nächste Woche':state.aemter.weekOffset===-1?'Letzte Woche':`Woche ${state.aemter.weekOffset>0?'+':''}${state.aemter.weekOffset}`;
+
+  let html = `<h2 class="mtitle">🏠 Ämter-Plan</h2>
+    <div class="card rotinfo" style="margin-bottom:11px">
+      <span style="font-size:20px">🔄</span>
+      <div><div style="font-weight:800;font-size:12px">Nächste Rotation: Sonntag</div>
+      <div style="font-size:11px;color:var(--muted)">in ${daysUntilSun} Tag${daysUntilSun!==1?'en':''}</div></div>
+      <div class="kwb">KW ${weekNum}</div>
+    </div>
+    <div class="wnav" style="margin-bottom:14px">
+      <button class="btn bg" onclick="aemterWeek(-1)">‹</button>
+      <div style="font-weight:800;font-size:13px">${wlbl}</div>
+      <button class="btn bg" onclick="aemterWeek(1)">›</button>
+    </div>`;
+
+  KIDS_LIST.forEach(kid => {
+    const amt = assignments[kid.id]; // single Amt object
+    const done = !!state.aemter.doneMap[`${weekNum}-${kid.id}-${amt.id}`];
+    html += `<div class="card kidsec" style="border-top:4px solid ${kid.color};margin-bottom:11px">
+      <div class="khdr">
+        <span style="font-size:26px">${kid.emoji}</span>
+        <div><div style="font-weight:800;font-size:15px">${kid.name}</div>
+        <div style="font-size:11px;color:var(--muted)">${done?'✅ Erledigt':'⏳ Noch offen'}</div></div>
+        <div class="pmini">
+          <div class="pdot ${done?'on':''}" style="${done?`background:${kid.color}`:''}"></div>
+        </div>
+      </div>
+      <div class="alist">
+        <div class="aitem ${done?'done':''}" onclick="toggleAmt('${weekNum}','${kid.id}','${amt.id}')">
+          <span class="aemoji">${amt.emoji}</span>
+          <div class="aname">${amt.name}</div>
+          <div class="achk ${done?'on':''}">${done?'✓':''}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  html += `<div class="card"><div class="ctitle">📋 Alle 6 Ämter diese Woche</div>`;
+  AEMTER.forEach(a => {
+    const ownerKid = KIDS_LIST.find(k => assignments[k.id].id === a.id);
+    html += `<div class="allrow"><span>${a.emoji}</span><span style="flex:1;font-size:12px;font-weight:600">${a.name}</span>
+      ${ownerKid
+        ? `<span class="tag" style="background:${ownerKid.color}40;color:#555">${ownerKid.emoji} ${ownerKid.name}</span>`
+        : `<span class="tag" style="background:#f5f5f5;color:#bbb">— frei</span>`}
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+function toggleAmt(weekNum, kid, amtId) {
+  const key = `${weekNum}-${kid}-${amtId}`;
+  state.aemter.doneMap[key] = !state.aemter.doneMap[key];
+  save(); render('aemter');
+}
+function aemterWeek(d) { state.aemter.weekOffset+=d; render('aemter'); }
+
+// ============================================================
+// EINKAUFSLISTE
+// ============================================================
+const KATS = ['🥩 Fleisch','🥦 Gemüse','🍎 Obst','🥛 Milchprodukte','🥖 Brot & Backwaren','🥫 Konserven','🧴 Haushalt','🍫 Süßes','🥤 Getränke','Sonstiges'];
+
+function renderEinkauf() {
+  const {items,showDone} = state.einkauf;
+  const active = items.filter(i=>!i.done);
+  const done = items.filter(i=>i.done);
+
+  let html = `<h2 class="mtitle">🛒 Einkaufsliste</h2>
+    <div class="card estats" style="margin-bottom:11px">
+      <div class="stat"><div class="snum">${active.length}</div><div class="slbl">Noch kaufen</div></div>
+      <div class="stat"><div class="snum">${done.length}</div><div class="slbl">Im Korb</div></div>
+      <div class="stat"><div class="snum">${items.length}</div><div class="slbl">Gesamt</div></div>
+    </div>`;
+
+  const grouped = {};
+  KATS.forEach(k => { const ki = active.filter(i=>i.kategorie===k); if(ki.length) grouped[k]=ki; });
+
+  if (!Object.keys(grouped).length) html += `<div class="empty card"><div class="ei">🛒</div><p>Liste ist leer</p></div>`;
+
+  Object.entries(grouped).forEach(([kat,katItems]) => {
+    html += `<div class="card" style="margin-bottom:7px"><div class="ctitle">${kat}</div>`;
+    katItems.forEach(item => {
+      html += `<div class="eitem">
+        <button class="chk" onclick="toggleEinkauf('${item.id}')"></button>
+        <div style="flex:1;display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+          <span class="iname">${item.name}</span>
+          ${item.menge?`<span class="imenge">${item.menge}</span>`:''}
+        </div>
+        <span style="font-size:15px">${PERSONS[item.addedBy]?.emoji||''}</span>
+        <button class="btn bd" style="font-size:10px;padding:3px 6px" onclick="deleteEinkauf('${item.id}')">✕</button>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  if (done.length) {
+    html += `<div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+        <button style="background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:var(--muted);text-decoration:underline" onclick="toggleShowDone()">
+          ✓ Im Korb (${done.length}) ${showDone?'▲':'▼'}
+        </button>
+        <button class="btn bd" onclick="clearDone()">Alle entfernen</button>
+      </div>`;
+    if (showDone) {
+      done.forEach(item => {
+        html += `<div class="eitem done">
+          <button class="chk on" onclick="toggleEinkauf('${item.id}')">✓</button>
+          <span class="iname">${item.name}</span>
+          ${item.menge?`<span class="imenge">${item.menge}</span>`:''}
+          <button class="btn bd" style="font-size:10px;padding:3px 6px" onclick="deleteEinkauf('${item.id}')">✕</button>
+        </div>`;
+      });
+    }
+    html += `</div>`;
+  }
+
+  html += `<button class="btn bp" style="width:100%;justify-content:center;margin-top:11px" onclick="openAddEinkauf()">+ Produkt hinzufügen</button>`;
+  return html;
+}
+
+function toggleEinkauf(id) {
+  state.einkauf.items = state.einkauf.items.map(i=>i.id===id?{...i,done:!i.done}:i);
+  save(); render('einkauf');
+}
+function deleteEinkauf(id) {
+  state.einkauf.items = state.einkauf.items.filter(i=>i.id!==id);
+  save(); render('einkauf');
+}
+function clearDone() {
+  state.einkauf.items = state.einkauf.items.filter(i=>!i.done);
+  save(); render('einkauf');
+}
+function toggleShowDone() { state.einkauf.showDone=!state.einkauf.showDone; render('einkauf'); }
+
+function openAddEinkauf() {
+  showModal(`<div class="mhdr"><div class="mtit">Produkt hinzufügen</div><button class="xbtn" onclick="closeModal()">✕</button></div>
+    <div class="fg"><label class="fl">Produkt *</label><input id="en" placeholder="z.B. Milch" autofocus /></div>
+    <div class="fg"><label class="fl">Menge</label><input id="em" placeholder="z.B. 2x, 500g..." /></div>
+    <div class="fg"><label class="fl">Kategorie</label><select id="ek">
+      ${KATS.map(k=>`<option value="${k}">${k}</option>`).join('')}
+    </select></div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:9px">Von: ${PERSONS[state.activePerson]?.emoji} ${PERSONS[state.activePerson]?.name}</div>
+    <button class="btn bp" style="width:100%;justify-content:center" onclick="saveEinkauf()">💾 Hinzufügen</button>`);
+}
+
+function saveEinkauf() {
+  const name = document.getElementById('en').value.trim();
+  if (!name) return;
+  state.einkauf.items.push({id:Date.now().toString(),name,menge:document.getElementById('em').value,kategorie:document.getElementById('ek').value,done:false,addedBy:state.activePerson});
+  save(); closeModal(); render('einkauf');
+}
+
+// ============================================================
+// PINNWAND
+// ============================================================
+const PCOLORS_NOTES = {
+  angelina:{bg:'#fde8e3',border:'#e8a598',label:'#c0665a'},
+  aleyna:{bg:'#e3f0fb',border:'#a8c8e8',label:'#4a7fa8'},
+  cristiano:{bg:'#e3fbe8',border:'#a8e0b8',label:'#3a8a4a'},
+  alle:{bg:'#fff8e1',border:'#f5c842',label:'#b8860b'}
+};
+const PALL = ['alle','angelina','aleyna','cristiano'];
+const PALL_NAMES = {alle:'Alle',angelina:'Angelina',aleyna:'Aleyna',cristiano:'Cristiano'};
+const PALL_EMOJIS = {alle:'👨‍👩‍👧‍👦',angelina:'👩',aleyna:'👧',cristiano:'👦'};
+const PIN_COLORS = ['#fde8e3','#e3f0fb','#e3fbe8','#fff8e1','#f3e8fd','#e8fdf3'];
+
+function renderPinnwand() {
+  const {notes,filter} = state.pinnwand;
+  const filtered = notes.filter(n => filter==='alle' || n.forPerson===filter || n.forPerson==='alle' || n.author===filter);
+
+  let html = `<h2 class="mtitle">📌 Pinnwand</h2>
+    <div class="chips" style="margin-bottom:13px">`;
+  PALL.forEach(p => {
+    html += `<button class="chip ${filter===p?'on':''}" onclick="setPinnFilter('${p}')">${PALL_EMOJIS[p]} ${PALL_NAMES[p]}</button>`;
+  });
+  html += `</div><div class="ngrid">`;
+  filtered.forEach(note => {
+    const colors = PCOLORS_NOTES[note.author] || PCOLORS_NOTES.alle;
+    html += `<div class="ncard" style="background:${note.pinColor};border-color:${colors.border}">
+      <div class="npin">📌</div>
+      ${note.forPerson!=='alle'?`<div class="nfor" style="color:${PCOLORS_NOTES[note.forPerson]?.label}">Für: ${PALL_EMOJIS[note.forPerson]} ${PALL_NAMES[note.forPerson]}</div>`:''}
+      <div class="ntxt">${note.text}</div>
+      <div class="nfoot">
+        <span class="nauthor" style="color:${colors.label}">${PALL_EMOJIS[note.author]||''} ${PALL_NAMES[note.author]||note.author}</span>
+        <span class="ndate">${note.createdAt}</span>
+        <button class="ndel" onclick="deleteNote('${note.id}')">✕</button>
+      </div>
+    </div>`;
+  });
+  if (!filtered.length) html += `<div class="empty" style="grid-column:1/-1"><div class="ei">📌</div><p>Keine Notizen</p></div>`;
+  html += `</div>
+    <button class="btn bp" style="width:100%;justify-content:center;margin-top:11px" onclick="openAddNote()">+ Neue Notiz</button>`;
+  return html;
+}
+
+function setPinnFilter(f) { state.pinnwand.filter=f; render('pinnwand'); }
+function deleteNote(id) { state.pinnwand.notes=state.pinnwand.notes.filter(n=>n.id!==id); save(); render('pinnwand'); }
+
+function openAddNote() {
+  window._noteColor = '#fff8e1';
+  showModal(`<div class="mhdr"><div class="mtit">Neue Notiz</div><button class="xbtn" onclick="closeModal()">✕</button></div>
+    <div class="fg"><label class="fl">Notiz *</label><textarea id="ntxt" rows="4" placeholder="Was möchtest du aufschreiben?"></textarea></div>
+    <div class="fg"><label class="fl">Für wen?</label><div class="chips" id="nforchips">
+      ${PALL.map(p=>`<button class="chip ${p==='alle'?'on':''}" onclick="selNoteFor('${p}')">${PALL_EMOJIS[p]} ${PALL_NAMES[p]}</button>`).join('')}
+    </div></div>
+    <div class="fg"><label class="fl">Zettel-Farbe</label><div class="cpick">
+      ${PIN_COLORS.map(c=>`<button class="cdotpick ${c==='#fff8e1'?'on':''}" style="background:${c}" onclick="selNoteColor('${c}',this)"></button>`).join('')}
+    </div></div>
+    <button class="btn bp" style="width:100%;justify-content:center;margin-top:4px" onclick="saveNote()">📌 Anpinnen</button>`);
+  window._noteFor='alle';
+}
+
+function selNoteFor(p) {
+  window._noteFor=p;
+  document.querySelectorAll('#nforchips .chip').forEach(c=>c.classList.toggle('on',c.textContent.includes(PALL_NAMES[p])));
+}
+function selNoteColor(c, btn) {
+  window._noteColor=c;
+  document.querySelectorAll('.cdotpick').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function saveNote() {
+  const text = document.getElementById('ntxt').value.trim();
+  if (!text) return;
+  state.pinnwand.notes.unshift({id:Date.now().toString(),text,author:state.activePerson,pinColor:window._noteColor||'#fff8e1',createdAt:new Date().toLocaleDateString('de-DE'),forPerson:window._noteFor||'alle'});
+  save(); closeModal(); render('pinnwand');
+}
+
+
+
+// ============================================================
+// STERNE & TASCHENGELD
+// ============================================================
+function renderSterne() {
+  const stars  = state.todo.stars;
+  const hist   = state.sterne.history;
+  const sett   = state.sterne.settings;
+  const KIDS   = [
+    {id:'aleyna',    name:'Aleyna',    emoji:'👧', color:'#a8c8e8', soft:'#e3f0fb'},
+    {id:'cristiano', name:'Cristiano', emoji:'👦', color:'#a8e0b8', soft:'#e3fbe8'}
+  ];
+
+  let html = '<h2 class="mtitle">⭐ Sterne & Taschengeld</h2>';
+
+  KIDS.forEach(function(kid) {
+    var bal   = stars[kid.id] || 0;
+    var fix   = sett[kid.id].fixBetrag;
+    var rate  = sett[kid.id].proStern;
+    var varBetrag = (bal * rate).toFixed(2).replace('.', ',');
+    var total = (fix + bal * rate).toFixed(2).replace('.', ',');
+
+    html += '<div class="card" style="border-top:4px solid ' + kid.color + ';margin-bottom:12px">';
+    // Header row
+    html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+    html += '<span style="font-size:36px">' + kid.emoji + '</span>';
+    html += '<div style="flex:1"><div style="font-size:15px;font-weight:800">' + kid.name + '</div>';
+    html += '<div style="font-size:11px;color:var(--muted)">1 Stern = ' + rate.toFixed(2).replace('.', ',') + ' €</div></div>';
+    html += '<button class="btn bg" style="font-size:11px;padding:5px 9px" onclick="openSterneSettings(\'' + kid.id + '\')">⚙️</button>';
+    html += '</div>';
+    // Star balance big
+    html += '<div style="background:' + kid.soft + ';border-radius:12px;padding:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">';
+    html += '<div><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Sterne</div>';
+    html += '<div style="font-size:32px;font-weight:900;color:#e6a817;line-height:1">⭐ ' + bal + '</div></div>';
+    html += '<div style="text-align:right"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Auszahlung</div>';
+    html += '<div style="font-size:22px;font-weight:900;color:#2e7d32">' + total + ' €</div>';
+    html += '<div style="font-size:11px;color:var(--muted)">' + fix.toFixed(2).replace('.', ',') + ' fix + ' + varBetrag + ' variabel</div>';
+    html += '</div></div>';
+    // Action buttons
+    html += '<div style="display:flex;gap:8px">';
+    html += '<button class="btn bp" style="flex:1;justify-content:center;font-size:12px" onclick="openAddStars(\'' + kid.id + '\')">+ Sterne</button>';
+    html += '<button class="btn bg" style="flex:1;justify-content:center;font-size:12px" onclick="openRedeemStars(\'' + kid.id + '\')">🎁 Einlösen</button>';
+    html += '<button class="btn bg" style="flex:1;justify-content:center;font-size:12px" onclick="openPayout(\'' + kid.id + '\')">💶 Abrechnen</button>';
+    html += '</div>';
+    html += '</div>';
+  });
+
+  // History
+  html += '<div class="card"><div class="ctitle">📜 Verlauf</div>';
+  if (!hist.length) {
+    html += '<div class="empty"><div class="ei">📜</div><p>Noch kein Verlauf</p></div>';
+  } else {
+    var sorted = hist.slice().reverse().slice(0, 30);
+    sorted.forEach(function(e) {
+      var kid = KIDS.find(function(k) { return k.id === e.kid; });
+      var plus = e.amount > 0;
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">';
+      html += '<span style="font-size:18px">' + (kid ? kid.emoji : '?') + '</span>';
+      html += '<div style="flex:1"><div style="font-size:13px;font-weight:700">' + e.reason + '</div>';
+      html += '<div style="font-size:10px;color:var(--muted)">' + (kid ? kid.name : '') + ' · ' + e.date + '</div></div>';
+      html += '<div style="font-weight:900;font-size:14px;color:' + (plus ? '#2e7d32' : '#c0392b') + '">';
+      html += (plus ? '+' : '') + e.amount + ' ⭐</div>';
+      html += '</div>';
+    });
+  }
+  html += '</div>';
+  return html;
+}
+
+function openSterneSettings(kidId) {
+  var kid = kidId === 'aleyna' ? 'Aleyna' : 'Cristiano';
+  var s = state.sterne.settings[kidId];
+  showModal(
+    '<div class="mhdr"><div class="mtit">⚙️ ' + kid + ' – Einstellungen</div><button class="xbtn" onclick="closeModal()">&#x2715;</button></div>'
+    + '<div class="fg"><label class="fl">Fixer Betrag (€)</label><input type="number" id="st-fix" min="0" step="0.50" value="' + s.fixBetrag + '" /></div>'
+    + '<div class="fg"><label class="fl">Wert pro Stern (€)</label><input type="number" id="st-rate" min="0.10" step="0.10" value="' + s.proStern + '" /></div>'
+    + '<button class="btn bp" style="width:100%;justify-content:center;margin-top:8px" onclick="saveSterneSettings(\'' + kidId + '\')">&#x1F4BE; Speichern</button>'
+  );
+}
+
+function saveSterneSettings(kidId) {
+  var fix  = parseFloat(document.getElementById('st-fix').value)  || 0;
+  var rate = parseFloat(document.getElementById('st-rate').value) || 0.5;
+  state.sterne.settings[kidId] = {fixBetrag: fix, proStern: rate};
+  save(); closeModal(); render('sterne');
+}
+
+function openAddStars(kidId) {
+  var kid = kidId === 'aleyna' ? 'Aleyna 👧' : 'Cristiano 👦';
+  showModal(
+    '<div class="mhdr"><div class="mtit">Sterne hinzufügen – ' + kid + '</div><button class="xbtn" onclick="closeModal()">&#x2715;</button></div>'
+    + '<div class="fg"><label class="fl">Anzahl Sterne</label><input type="number" id="st-amount" min="1" value="1" /></div>'
+    + '<div class="fg"><label class="fl">Grund (optional)</label><input id="st-reason" placeholder="z.B. Zimmer aufgeräumt" /></div>'
+    + '<button class="btn bp" style="width:100%;justify-content:center;margin-top:8px" onclick="saveStarChange(\'' + kidId + '\',1)">&#x2795; Hinzufügen</button>'
+  );
+}
+
+function openRedeemStars(kidId) {
+  var kid = kidId === 'aleyna' ? 'Aleyna 👧' : 'Cristiano 👦';
+  var bal = state.todo.stars[kidId] || 0;
+  showModal(
+    '<div class="mhdr"><div class="mtit">Sterne einlösen – ' + kid + '</div><button class="xbtn" onclick="closeModal()">&#x2715;</button></div>'
+    + '<div style="text-align:center;padding:6px 0 14px;font-size:26px;font-weight:900;color:#e6a817">⭐ ' + bal + ' verfügbar</div>'
+    + '<div class="fg"><label class="fl">Anzahl einlösen</label><input type="number" id="st-amount" min="1" max="' + bal + '" value="1" /></div>'
+    + '<div class="fg"><label class="fl">Wofür?</label><input id="st-reason" placeholder="z.B. Extra Bildschirmzeit" /></div>'
+    + '<button class="btn bp" style="width:100%;justify-content:center;margin-top:8px;background:#e8a598" onclick="saveStarChange(\'' + kidId + '\',-1)">&#x1F381; Einlösen</button>'
+  );
+}
+
+function openPayout(kidId) {
+  var kid    = kidId === 'aleyna' ? 'Aleyna 👧' : 'Cristiano 👦';
+  var bal    = state.todo.stars[kidId] || 0;
+  var s      = state.sterne.settings[kidId];
+  var total  = (s.fixBetrag + bal * s.proStern).toFixed(2).replace('.', ',');
+  showModal(
+    '<div class="mhdr"><div class="mtit">💶 Abrechnung – ' + kid + '</div><button class="xbtn" onclick="closeModal()">&#x2715;</button></div>'
+    + '<div style="background:#f0fbf0;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center">'
+    + '<div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">Auszahlung</div>'
+    + '<div style="font-size:38px;font-weight:900;color:#2e7d32">💶 ' + total + ' €</div>'
+    + '<div style="font-size:12px;color:var(--muted);margin-top:4px">'
+    + s.fixBetrag.toFixed(2).replace('.', ',') + ' € fix  +  '
+    + (bal * s.proStern).toFixed(2).replace('.', ',') + ' € (' + bal + ' Sterne × '
+    + s.proStern.toFixed(2).replace('.', ',') + ' €)</div></div>'
+    + '<div class="fg"><label class="fl">Sterne nach Abrechnung auf 0 setzen?</label>'
+    + '<div class="chips"><button class="chip on" id="reset-yes" onclick="selReset(true)">Ja, zurücksetzen</button>'
+    + '<button class="chip" id="reset-no" onclick="selReset(false)">Nein, behalten</button></div></div>'
+    + '<button class="btn bp" style="width:100%;justify-content:center;margin-top:8px;background:#4caf50" onclick="confirmPayout(\'' + kidId + '\')">✅ Abrechnung bestätigen</button>'
+  );
+  window._resetAfterPayout = true;
+}
+
+function selReset(v) {
+  window._resetAfterPayout = v;
+  document.getElementById('reset-yes').classList.toggle('on', v);
+  document.getElementById('reset-no').classList.toggle('on', !v);
+}
+
+function confirmPayout(kidId) {
+  var bal   = state.todo.stars[kidId] || 0;
+  var s     = state.sterne.settings[kidId];
+  var total = (s.fixBetrag + bal * s.proStern).toFixed(2);
+  if (!state.sterne.history) state.sterne.history = [];
+  state.sterne.history.push({
+    id: Date.now().toString(),
+    kid: kidId,
+    amount: window._resetAfterPayout ? -bal : 0,
+    reason: 'Abrechnung: ' + total + ' € ausgezahlt',
+    date: new Date().toLocaleDateString('de-DE')
+  });
+  if (window._resetAfterPayout) state.todo.stars[kidId] = 0;
+  save(); closeModal(); render('sterne');
+}
+
+function saveStarChange(kidId, direction) {
+  var amount = parseInt(document.getElementById('st-amount').value) || 1;
+  var reason = document.getElementById('st-reason').value.trim()
+    || (direction === 1 ? 'Sterne hinzugefügt' : 'Sterne eingelöst');
+  var change  = amount * direction;
+  var current = state.todo.stars[kidId] || 0;
+  state.todo.stars[kidId] = Math.max(0, current + change);
+  if (!state.sterne.history) state.sterne.history = [];
+  state.sterne.history.push({
+    id: Date.now().toString(),
+    kid: kidId,
+    amount: change,
+    reason: reason,
+    date: new Date().toLocaleDateString('de-DE')
+  });
+  save(); closeModal(); render('sterne');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+autoResetRecurring();
+showPage('speiseplan');
+document.querySelectorAll('.pbtn').forEach(b => b.classList.toggle('on', b.dataset.person===state.activePerson));
+</script>
+</body>
+</html>
